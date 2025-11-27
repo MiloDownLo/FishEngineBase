@@ -28,17 +28,13 @@ void Initialize()
 
 	playerPosition.SetValue(0, -5, 0);
 	player.SetPosition(playerPosition);
-	player.SetColor(1, 0, 0);
-	player.SetScale(0.05f, 0.05f, 0.05f);
-	player.LoadModel("Models/Love.obj");
 }
 
 void Update() 
 {
 	Vector3 colliderScale(1, 1, 1);
 	player.SetCollider(player.GetPosition(), colliderScale);
-	player.RenderModel();
-	
+	player.DrawSphere(1, 12, 12);
 
 	if (Input::GetKey('d')) 
 	{

@@ -4,7 +4,6 @@
 #include "vector3.h"
 #include "color.h"
 #include "collider.h"
-#include "ModelLoader.h"
 
 class GameObject 
 {
@@ -35,8 +34,6 @@ public:
 	//void DrawCube();
 	// Create an enum for all possible primitives available in glut and pass in that enum
 	//void Draw(Primitives.Cube)
-	void LoadModel(string modelPath);
-	void RenderModel();
 
 private:
 	Vector3 position;
@@ -46,7 +43,6 @@ private:
 	float angle;
 	Color color;
 	Collider collider;
-	ModelLoader model;
 };
 
 #endif

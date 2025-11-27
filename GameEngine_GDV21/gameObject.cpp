@@ -106,23 +106,3 @@ void GameObject::DrawSphere(float radius, int slices, int stacks)
 	collider.SetDimension(position, scale);
 }
 
-void GameObject::LoadModel(string modelPath)
-{
-	model.LoadOBJ(modelPath);
-}
-
-void GameObject::RenderModel()
-{
-	glPushMatrix();
-	glTranslatef(position.x, position.y, position.z);
-	glRotatef(angle, rotation.x, rotation.y, rotation.z);
-	glScalef(scale.x, scale.y, scale.z);
-	glColor4f(color.red, color.green, color.blue, color.alpha);
-	model.RenderModel();
-	glPopMatrix();
-
-	// There can be inconsistencies in collider size because of initial obj scaling. 
-	// Best to update the collider independently in these cases
-	collider.SetDimension(position, scale);
-}
-
