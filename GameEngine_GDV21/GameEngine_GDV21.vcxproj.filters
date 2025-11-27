@@ -60,10 +60,13 @@
     <ClCompile Include="color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="collider.cpp">
+    <ClCompile Include="input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="input.cpp">
+    <ClCompile Include="collider.cpp">
+      <Filter>Source Files\GameplayFoundation</Filter>
+    </ClCompile>
+    <ClCompile Include="movement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,11 +86,17 @@
     <ClInclude Include="color.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="collider.h">
+      <Filter>Header Files\GameplayFoundation</Filter>
+    </ClInclude>
+    <ClInclude Include="movement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO LIST.txt" />
   </ItemGroup>
 </Project>

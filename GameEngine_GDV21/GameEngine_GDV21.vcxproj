@@ -130,6 +130,7 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="movement.cpp" />
     <ClCompile Include="vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +140,11 @@
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="movement.h" />
     <ClInclude Include="vector3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO LIST.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

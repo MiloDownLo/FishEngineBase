@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "movement.h"
 #include "iostream";
 
 using namespace std;
@@ -36,34 +37,27 @@ void Update()
 	player.SetCollider(player.GetPosition(), colliderScale);
 	player.DrawSphere(1, 12, 12);
 
-	if (Input::GetKey('d')) 
+	//TODO: Find a way to compress all this movement stuff into movement.cpp
+	Vector3 oldPosition = player.GetPosition();
+	Vector3 newPosition = MovementScript(player, oldPosition);
+	player.SetPosition(newPosition);
+	//TODO: Figure out how to properly unstuck the player on collision
+	// though honestly this might not matter if we're using 2d shapes(?)
+	for (int i = 0; i < enemies.size(); i++)
 	{
-		Vector3 rightMovement(0.1f, 0, 0);
-		playerPosition += rightMovement;
+		if (player.CheckCollision(enemies[i]))
+		{
+			player.SetPosition(oldPosition);
+			break;
+		}
 	}
-	if (Input::GetKey('a'))
-	{
-		Vector3 leftMovement (-0.1f, 0, 0);
-		playerPosition += leftMovement;
-	}
-	if (Input::GetKey('w'))
-	{
-		Vector3 topMovement(0, 0.1f, 0);
-		playerPosition += topMovement;
-	}
-	if (Input::GetKey('s'))
-	{
-		Vector3 downMovement(0, -0.1f, 0);
-		playerPosition += downMovement;
-	}
-	player.SetPosition(playerPosition);
-
+	
 
 	// Iterate through each enemy
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		// Make sure to render them ever frame
-		enemies[i].DrawSphere(1, 12, 12);
+		enemies[i].Draw();
 		if (player.CheckCollision(enemies[i])) 
 		{
 			cout << "Collided with enemy at index " << i << endl;
