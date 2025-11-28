@@ -83,7 +83,7 @@ void GameObject::Draw()
 	glRotatef(angle, rotation.x, rotation.y, rotation.z);
 	glScalef(scale.x, scale.y, scale.z);
 	glColor4f(color.red, color.green, color.blue, color.alpha);
-	glutSolidCube(1.0f);
+	glutSolidSphere(0.5f, 12, 8);
 	glPopMatrix();
 
 	// Update the collider here
