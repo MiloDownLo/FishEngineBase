@@ -60,6 +60,12 @@ bool GameObject::CheckCollision(GameObject other)
 	return collider.CheckCollision(other.collider);
 }
 
+void GameObject::SetGradientColor(Vector3 top, Vector3 bottom)
+{
+	gradientTop = top;
+	gradientBottom = bottom;
+}
+
 Vector3 GameObject::GetScale() 
 {
 	return scale;
@@ -124,5 +130,23 @@ void GameObject::Draw() //Draws a quad
 
 	// Update the collider here
 	collider.SetDimension(position, scale);
+}
+
+void GameObject::DrawGradientQuad()
+{
+	glPushMatrix();
+		glTranslatef(position.x, position.y, position.z);
+		glRotatef(angle, rotation.x, rotation.y, rotation.z);
+		glScalef(scale.x, scale.y, scale.z);
+		glBegin(GL_QUADS);
+			glColor3f(gradientBottom.x, gradientBottom.y, gradientBottom.z);
+				glVertex3f(-0.5f, -0.5f, 0.0f);
+				glVertex3f(+0.5f, -0.5f, 0.0f);
+
+			glColor3f(gradientTop.x, gradientTop.y, gradientTop.z);
+				glVertex3f(+0.5f, +0.5f, 0.0f);
+				glVertex3f(-0.5f, +0.5f, 0.0f);
+		glEnd();
+	glPopMatrix();
 }
 

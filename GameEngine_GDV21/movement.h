@@ -6,5 +6,6 @@
 #include <vector>
 
 Vector3 MovementScript(GameObject player, Vector3 playerPosition);
+void npcMovement(GameObject& npc, Vector3& npcPosition, float& npcSpeed);
 Vector3 MovementResolve(GameObject& player, Vector3 playerPosition, std::vector<GameObject>& enemies);
 #endif

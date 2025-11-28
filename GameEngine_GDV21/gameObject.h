@@ -21,6 +21,7 @@ public:
 	bool CheckCollision(GameObject other);
 	// Option to display a line renderer representing the position/scale of the collider
 	//void DrawCollider();
+	void SetGradientColor(Vector3 bottom, Vector3 top);
 
 	// Getters
 	Vector3 GetScale();
@@ -32,6 +33,7 @@ public:
 	// Add more primitives to this class
 	void DrawSphere(float radius, int slices, int stacks);
 	void Draw();
+	void DrawGradientQuad();
 	//void DrawCube();
 	// Create an enum for all possible primitives available in glut and pass in that enum
 	//void Draw(Primitives.Cube)
@@ -44,6 +46,8 @@ private:
 	float angle;
 	Color color;
 	Collider collider;
+	Vector3 gradientTop;
+	Vector3 gradientBottom;
 };
 
 #endif
