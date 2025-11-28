@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 *.vcxproj
+GameEngine_GDV21/GameEngine_GDV21.vcxproj

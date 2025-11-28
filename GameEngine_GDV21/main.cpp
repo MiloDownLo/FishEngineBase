@@ -16,7 +16,7 @@ int enemyCount = 10;
 
 void Initialize() 
 {
-	enemyFormation.SetValue(-7.5f, 5, 0);
+	enemyFormation.SetValue(-7.5f, -5, 0);
 	for (int i = 0; i < enemyCount; i++) {
 		GameObject enemy;
 		// set the position to have interval for each based on index
@@ -27,7 +27,7 @@ void Initialize()
 		enemies.push_back(enemy);
 	}
 
-	playerPosition.SetValue(0, -5, 0);
+	playerPosition.SetValue(0, 5, 0);
 	player.SetPosition(playerPosition);
 }
 
