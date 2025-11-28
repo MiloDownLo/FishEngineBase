@@ -67,7 +67,7 @@
       <Filter>Source Files\GameplayFoundation</Filter>
     </ClCompile>
     <ClCompile Include="movement.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GameplayFoundation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +93,7 @@
       <Filter>Header Files\GameplayFoundation</Filter>
     </ClInclude>
     <ClInclude Include="movement.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameplayFoundation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

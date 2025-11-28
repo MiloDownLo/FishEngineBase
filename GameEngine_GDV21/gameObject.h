@@ -27,10 +27,11 @@ public:
 	Vector3 GetPosition();
 	Collider GetCollider();
 
-	void Draw();
+	void DrawCube();
 	// Possible modification to this class
 	// Add more primitives to this class
 	void DrawSphere(float radius, int slices, int stacks);
+	void Draw();
 	//void DrawCube();
 	// Create an enum for all possible primitives available in glut and pass in that enum
 	//void Draw(Primitives.Cube)

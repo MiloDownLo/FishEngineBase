@@ -75,15 +75,15 @@ Collider GameObject::GetCollider()
 	return collider;
 }
 
-void GameObject::Draw()
+void GameObject::DrawCube() //Draws a cube
 {
 	// This is where we call the respective openGL functions that will render our object
 	glPushMatrix();
-	glTranslatef(position.x, position.y, position.z);
-	glRotatef(angle, rotation.x, rotation.y, rotation.z);
-	glScalef(scale.x, scale.y, scale.z);
-	glColor4f(color.red, color.green, color.blue, color.alpha);
-	glutSolidSphere(0.5f, 12, 8);
+		glTranslatef(position.x, position.y, position.z);
+		glRotatef(angle, rotation.x, rotation.y, rotation.z);
+		glScalef(scale.x, scale.y, scale.z);
+		glColor4f(color.red, color.green, color.blue, color.alpha);
+		glutSolidCube(1);
 	glPopMatrix();
 
 	// Update the collider here
@@ -91,15 +91,35 @@ void GameObject::Draw()
 }
 
 
-void GameObject::DrawSphere(float radius, int slices, int stacks)
+void GameObject::DrawSphere(float radius, int slices, int stacks) //Draws a sphere
 {
 	// This is where we call the respective openGL functions that will render our object
 	glPushMatrix();
-	glTranslatef(position.x, position.y, position.z);
-	glRotatef(angle, rotation.x, rotation.y, rotation.z);
-	glScalef(scale.x, scale.y, scale.z);
-	glColor4f(color.red, color.green, color.blue, color.alpha);
-	glutSolidSphere(radius, slices, stacks);
+		glTranslatef(position.x, position.y, position.z);
+		glRotatef(angle, rotation.x, rotation.y, rotation.z);
+		glScalef(scale.x, scale.y, scale.z);
+		glColor4f(color.red, color.green, color.blue, color.alpha);
+		glutSolidSphere(radius, slices, stacks);
+	glPopMatrix();
+
+	// Update the collider here
+	collider.SetDimension(position, scale);
+}
+
+void GameObject::Draw() //Draws a quad
+{
+	//as much as possible we want our objects to 1x1 scale
+	glPushMatrix();
+		glTranslatef(position.x, position.y, position.z);
+		glRotatef(angle, rotation.x, rotation.y, rotation.z);
+		glScalef(scale.x, scale.y, scale.z);
+		glColor4f(color.red, color.green, color.blue, color.alpha);
+		glBegin(GL_QUADS); //Initializes the object at a fixed size at origin to scale collider correctly
+			glVertex3f(-0.5f, -0.5f, 0.0f);
+			glVertex3f(+0.5f, -0.5f, 0.0f);
+			glVertex3f(+0.5f, +0.5f, 0.0f);
+			glVertex3f(-0.5f, +0.5f, 0.0f);
+		glEnd();
 	glPopMatrix();
 
 	// Update the collider here

@@ -9,7 +9,8 @@ Vector3 MovementScript(GameObject player, Vector3 playerPosition)
 	// Define movement boundaries (walls on both sides)
 	float leftWall = -8.0f;   // Left boundary
 	float rightWall = 8.0f;   // Right boundary
-	
+	float moveSpeed = 0.1f;
+
 	if (Input::GetKey('d'))
 	{
 		Vector3 rightMovement(0.1f, 0, 0);
@@ -18,7 +19,7 @@ Vector3 MovementScript(GameObject player, Vector3 playerPosition)
 		// Only move right if not hitting the right wall
 		if (newPosition.x <= rightWall)
 		{
-			playerPosition = newPosition;
+			playerPosition.x += moveSpeed;
 		}
 	}
 	if (Input::GetKey('a'))
@@ -29,14 +30,83 @@ Vector3 MovementScript(GameObject player, Vector3 playerPosition)
 		// Only move left if not hitting the left wall
 		if (newPosition.x >= leftWall)
 		{
-			playerPosition = newPosition;
+			playerPosition.x -= moveSpeed;
 		}
 	}
+
+
 	if (Input::GetKey('s'))
 	{
-		Vector3 downMovement(0, -0.1f, 0);
-		playerPosition += downMovement;
+		playerPosition.y -= moveSpeed;
+	}
+	if (Input::GetKey('w'))
+	{
+		playerPosition.y += moveSpeed;
 	}
 
 	return (playerPosition);
+}
+
+// Resolve player movement and collisions and return the final position.
+// Uses axis-separated resolution: move X then Y and revert only the axis that collides.
+Vector3 MovementResolve(GameObject& player, Vector3 playerPosition, std::vector<GameObject>& enemies)
+{
+	// Keep enemy colliders up-to-date for collision tests
+	for (int i = 0; i < enemies.size(); ++i)
+	{
+		enemies[i].SetCollider(enemies[i].GetPosition(), enemies[i].GetScale());
+	}
+
+	Vector3 oldPosition = playerPosition;
+	Vector3 targetPosition = MovementScript(player, oldPosition);
+
+	// Use player's scale for collider size
+	Vector3 playerColliderScale = player.GetScale();
+
+	Vector3 resolved = oldPosition;
+
+	// Move on X, test collisions, revert X if needed
+	resolved.x = targetPosition.x;
+	player.SetPosition(resolved);
+	player.SetCollider(player.GetPosition(), playerColliderScale);
+
+	bool collided = false;
+	for (int i = 0; i < enemies.size(); ++i)
+	{
+		if (player.CheckCollision(enemies[i]))
+		{
+			collided = true;
+			break;
+		}
+	}
+	if (collided)
+	{
+		resolved.x = oldPosition.x;
+		player.SetPosition(resolved);
+		player.SetCollider(player.GetPosition(), playerColliderScale);
+	}
+
+	// Move on Y, test collisions, revert Y if needed
+	resolved.y = targetPosition.y;
+	player.SetPosition(resolved);
+	player.SetCollider(player.GetPosition(), playerColliderScale);
+
+	collided = false;
+	for (size_t i = 0; i < enemies.size(); ++i)
+	{
+		if (player.CheckCollision(enemies[i]))
+		{
+			collided = true;
+			break;
+		}
+	}
+	if (collided)
+	{
+		resolved.y = oldPosition.y;
+		player.SetPosition(resolved);
+		player.SetCollider(player.GetPosition(), playerColliderScale);
+	}
+
+	// Return the final resolved position (Z doesn't matter for our purposes, it's 2D)
+	return resolved;
 }

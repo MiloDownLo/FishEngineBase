@@ -20,47 +20,46 @@ void Initialize()
 	for (int i = 0; i < enemyCount; i++) {
 		GameObject enemy;
 		// set the position to have interval for each based on index
-		enemy.SetPosition(enemyFormation.x + (spacing * i), enemyFormation.y, 0);
+		enemy.SetPosition(enemyFormation.x + (spacing * i),
+						  enemyFormation.y + ((spacing/2) * i),
+						  0);
 		enemy.SetScale(1, 1, 1);
 		enemy.SetColor(1 - (colorFactor * i), 1, 0);
 		// Add the enemy instance to the vector collection
 		enemies.push_back(enemy);
 	}
 
+	//Initialize player variables
 	playerPosition.SetValue(0, 5, 0);
+	player.SetScale(1.5f, 1, 1);
+	player.SetColor(0.75f, 0.64f, 0.43f);
 	player.SetPosition(playerPosition);
 }
 
 void Update() 
 {
-	Vector3 colliderScale(1, 1, 1);
-	player.SetCollider(player.GetPosition(), colliderScale);
-	player.DrawSphere(1, 12, 12);
-
-	//TODO: Find a way to compress all this movement stuff into movement.cpp
+	// Save current player position
 	Vector3 oldPosition = player.GetPosition();
-	Vector3 newPosition = MovementScript(player, oldPosition);
+
+	// Move player and resolve collisions (movement + collision logic moved into movement.cpp)
+	Vector3 newPosition = MovementResolve(player, oldPosition, enemies);
 	player.SetPosition(newPosition);
-	//TODO: Figure out how to properly unstuck the player on collision
-	// though honestly this might not matter if we're using 2d shapes(?)
-	for (int i = 0; i < enemies.size(); i++)
-	{
-		if (player.CheckCollision(enemies[i]))
-		{
-			player.SetPosition(oldPosition);
-			break;
-		}
-	}
+
+	// Draw player at resolved position
+	player.SetPosition(newPosition);
+
+	//player.DrawSphere(1, 12, 12);
+	player.Draw();
 	
 
 	// Iterate through each enemy
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		// Make sure to render them ever frame
+		// Make sure to render them every frame
 		enemies[i].Draw();
 		if (player.CheckCollision(enemies[i])) 
 		{
-			cout << "Collided with enemy at index " << i << endl;
+			cout << "[!] Clipping through with enemy at index " << i << endl;
 		}
 	}
 }
