@@ -132,6 +132,21 @@ void GameObject::Draw() //Draws a quad
 	collider.SetDimension(position, scale);
 }
 
+void GameObject::DrawTri() //Draws a triangle
+{
+	glPushMatrix();
+		glTranslatef(position.x, position.y, position.z);
+		glRotatef(angle, rotation.x, rotation.y, rotation.z);
+		glScalef(scale.x, scale.y, scale.z);
+		glColor3f(color.red, color.green, color.blue);
+		glBegin(GL_TRIANGLES);
+			glVertex3f(0.0f, 0.5f, 0.0f);
+			glVertex3f(-0.5f, -0.5f, 0.0f);
+			glVertex3f(+0.5f, -0.5f, 0.0f);
+		glEnd();
+	glPopMatrix();
+}
+
 void GameObject::DrawGradientQuad()
 {
 	glPushMatrix();

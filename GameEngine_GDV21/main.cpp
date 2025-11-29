@@ -4,20 +4,24 @@
 
 using namespace std;
 
-Vector3 enemyFormation;
-Vector3 playerPosition;
-float speed = 0;
-float spacing = 6.0f;
-float scaleFactor = 0.25f;
-float colorFactor = 0.4f;
-vector<GameObject> enemies;
-vector<float> enemySpeeds;
-GameObject player;
-GameObject ocean;
-int enemyCount = 3;
+#pragma region Variables
+	Vector3 enemyFormation;
+	Vector3 playerPosition;
+	float speed = 0;
+	float spacing = 6.0f;
+	float scaleFactor = 0.25f;
+	float colorFactor = 0.4f;
+	vector<GameObject> enemies;
+	vector<float> enemySpeeds;
+	GameObject player;
+	GameObject hook;
+	GameObject ocean;
+	int enemyCount = 3;
+#pragma endregion
 
 void Initialize() 
 {
+	//Initialize enemy variables
 	enemyFormation.SetValue(-7.5f, -5, 0);
 	for (int i = 0; i < enemyCount; i++) {
 		GameObject enemy;
@@ -35,6 +39,7 @@ void Initialize()
 		if (i % 2 == 1) s = -s;           // every odd fish goes left first
 		enemySpeeds.push_back(s);
 	}
+	
 	//Initialize ocean variables
 	ocean.SetPosition(0, -2, -1);
 	ocean.SetScale(20, 14, 1);
@@ -49,12 +54,17 @@ void Initialize()
 	player.SetScale(1.6f, 1.1f, 1);
 	player.SetColor(0.75f, 0.64f, 0.43f);
 	player.SetPosition(playerPosition);
+
+	//Initialize hook variables
+	hook.SetScale(0.7f, 0.65f, 1); // small triangle
+	hook.SetColor(0.4f, 0.4f, 0.4f);
 }
 
 void Update() 
 {
 	ocean.DrawGradientQuad();
 	
+	#pragma region Player Movement and Collision
 	// Save current player position
 	Vector3 oldPosition = player.GetPosition();
 
@@ -65,20 +75,46 @@ void Update()
 
 	//player.DrawSphere(1, 12, 12);
 	player.Draw();
+	#pragma endregion
 	
+	// Position and draw the hook attached to the player's top-right corner
+	# pragma region Hook Positioning
+		Vector3 pPos = player.GetPosition();
+		Vector3 pScale = player.GetScale();
+		Vector3 hScale = hook.GetScale();
+
+		float pHalfW = pScale.x * 0.5f;
+		float pHalfH = pScale.y * 0.5f;
+		float hHalfW = hScale.x * 0.5f;
+		float hHalfH = hScale.y * 0.5f;
+
+		// Slight offset so the triangle sits visually on the corner (adjust offset as needed)
+		const float offset = 0.4f;
+
+		Vector3 triPos;
+		triPos.x = pPos.x + pHalfW - hHalfW + offset;
+		triPos.y = pPos.y + pHalfH - hHalfH + offset;
+		triPos.z = pPos.z + 0.01f; // render slightly in front of the player quad
+
+		hook.SetPosition(triPos);
+		hook.DrawTri();
+	# pragma endregion
 
 	// Iterate through each enemy
+	#pragma region Enemy Movement and Collision
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		// Make sure to render them every frame
 		Vector3 npcPos = enemies[i].GetPosition();
 		npcMovement(enemies[i], npcPos, enemySpeeds[i]);
 		enemies[i].Draw();
+
 		if (player.CheckCollision(enemies[i])) 
 		{
 			cout << "[!] Clipping through with enemy at index " << i << endl;
 		}
 	}
+	#pragma endregion
 }
 
 int main(int argc, char** argv)
