@@ -2,7 +2,7 @@
 PLAYER
 #- beige box as a boat
 #- can move left and right with walls on both ends
-- press a button to lower fishing rod
+- press a button to lower fishing rod (E or Space)
 
 FISHING ROD
 - stops player movement with a bool when cast
@@ -15,7 +15,7 @@ FISH
 - once fish is hooked up, it resets the fish to its og position and gives +1 point
 
 DAY
-- prototype features 2 days, second day repeating for demo
+- demo features 2 days, second day repeating for demo
 - each day lasts 2 minutes (not final)
 - 1st day has quota of 5 fish
 - 2nd day has quote of 7 fish
