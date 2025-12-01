@@ -20,7 +20,7 @@ using namespace std;
 
 	// Hook lowering variables
 	bool hookLowering = false;
-	float hookLowerSpeed = 0.03f;
+	float hookLowerSpeed = 0.1f;
 #pragma endregion
 
 void Initialize() 
@@ -69,22 +69,23 @@ void Update()
 	ocean.DrawGradientQuad();
 	
 	#pragma region Player Movement and Collision
-	// Save current player position
-	Vector3 oldPosition = player.GetPosition();
+	if (!hookLowering) // Only allow player movement if hook is not lowering
+	{
+		// Save current player position
+		Vector3 oldPosition = player.GetPosition();
 
-	// Move player and resolve collisions (movement + collision logic moved into movement.cpp)
-	Vector3 newPosition = MovementResolve(player, oldPosition, enemies);
-	player.SetPosition(newPosition);
-	player.SetPosition(newPosition);
-
-	//player.DrawSphere(1, 12, 12);
+		// Move player and resolve collisions (movement + collision logic moved into movement.cpp)
+		Vector3 newPosition = MovementResolve(player, oldPosition, enemies);
+		player.SetPosition(newPosition);
+		player.SetPosition(newPosition);
+	}
 	player.Draw();
+	
 	#pragma endregion
 
 	// Check for spacebar input to start lowering hook
-	if (Input::GetKey(' ')) {
-		hookLowering = true;
-	}
+	if (Input::GetKey(' ') || Input::GetKey('e')) 
+		{hookLowering = true;}
 	
 	// Position and draw the hook attached to the player's top-right corner
 	# pragma region Hook Positioning
