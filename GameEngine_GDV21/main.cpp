@@ -17,6 +17,10 @@ using namespace std;
 	GameObject hook;
 	GameObject ocean;
 	int enemyCount = 3;
+
+	// Hook lowering variables
+	bool hookLowering = false;
+	float hookLowerSpeed = 0.03f;
 #pragma endregion
 
 void Initialize() 
@@ -76,6 +80,11 @@ void Update()
 	//player.DrawSphere(1, 12, 12);
 	player.Draw();
 	#pragma endregion
+
+	// Check for spacebar input to start lowering hook
+	if (Input::GetKey(' ')) {
+		hookLowering = true;
+	}
 	
 	// Position and draw the hook attached to the player's top-right corner
 	# pragma region Hook Positioning
@@ -93,7 +102,16 @@ void Update()
 
 		Vector3 triPos;
 		triPos.x = pPos.x + pHalfW - hHalfW + offset;
-		triPos.y = pPos.y + pHalfH - hHalfH + offset;
+		if (hookLowering) {
+			// Get current hook position and lower it
+			Vector3 currentHookPos = hook.GetPosition();
+			triPos.y = currentHookPos.y - hookLowerSpeed; // Move down slowly
+		}
+		else {
+			// Default position attached to player
+			triPos.y = pPos.y + pHalfH - hHalfH + offset;
+		}
+
 		triPos.z = pPos.z + 0.01f; // render slightly in front of the player quad
 
 		hook.SetPosition(triPos);
