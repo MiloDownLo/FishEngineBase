@@ -61,8 +61,8 @@ void Update()
 	player.Draw();
 	#pragma endregion
 	
-	// Update and draw the hook
-	UpdateHook(hook, player);
+	// Update and draw the hook (now checks for enemy collisions)
+	UpdateHook(hook, player, enemies);
 
 	// Update and draw all enemies
 	UpdateEnemies();

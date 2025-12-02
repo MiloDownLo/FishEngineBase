@@ -13,7 +13,7 @@ void InitializeHook(GameObject& hook)
 	hook.SetColor(0.4f, 0.4f, 0.4f);
 }
 
-void UpdateHook(GameObject& hook, GameObject& player)
+void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& enemies)
 {
 	// Check for spacebar or E input to start lowering hook
 	if ((Input::GetKey(' ') || Input::GetKey('e')) && !hookLowering) {
@@ -42,8 +42,22 @@ void UpdateHook(GameObject& hook, GameObject& player)
 			// Move down
 			triPos.y = currentHookPos.y - hookLowerSpeed;
 
-			// Check if hit bottom boundary
-			if (triPos.y <= bottomBoundary) {
+			// Update hook position temporarily to check collision
+			hook.SetPosition(triPos.x, triPos.y, triPos.z);
+			hook.SetCollider(hook.GetPosition(), hScale);
+
+			// Check if hook hit any enemy
+			bool hitEnemy = false;
+			for (int i = 0; i < enemies.size(); i++) {
+				enemies[i].SetCollider(enemies[i].GetPosition(), enemies[i].GetScale());
+				if (hook.CheckCollision(enemies[i])) {
+					hitEnemy = true;
+					break;
+				}
+			}
+
+			// Check if hit bottom boundary or an enemy
+			if (triPos.y <= bottomBoundary || hitEnemy) {
 				hookGoingUp = true;
 			}
 		} else {
