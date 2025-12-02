@@ -35,6 +35,9 @@ public:
 	void Draw();
 	void DrawTri();
 	void DrawGradientQuad();
+	
+	// Static helper to draw a line between two points
+	static void DrawLine(Vector3 start, Vector3 end, float red, float green, float blue, float lineWidth = 2.0f);
 	//void DrawCube();
 	// Create an enum for all possible primitives available in glut and pass in that enum
 	//void Draw(Primitives.Cube)

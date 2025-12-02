@@ -165,3 +165,14 @@ void GameObject::DrawGradientQuad()
 	glPopMatrix();
 }
 
+void GameObject::DrawLine(Vector3 start, Vector3 end, float red, float green, float blue, float lineWidth)
+{
+	glLineWidth(lineWidth);
+	glColor3f(red, green, blue);
+	glBegin(GL_LINES);
+		glVertex3f(start.x, start.y, start.z);
+		glVertex3f(end.x, end.y, end.z);
+	glEnd();
+	glLineWidth(1.0f); // Reset line width to default
+}
+

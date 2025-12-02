@@ -16,5 +16,6 @@ void InitializeHook(GameObject& hook);
 void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& enemies);
 bool IsHookActive();
 int GetHookedFishIndex();
+void DrawFishingLine(GameObject& hook, GameObject& player);
 
 #endif

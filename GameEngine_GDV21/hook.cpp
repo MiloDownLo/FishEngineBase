@@ -91,7 +91,29 @@ void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& e
 	triPos.z = pPos.z + 0.01f;
 
 	hook.SetPosition(triPos);
+	
+	// Draw the fishing line first (so it appears behind the hook)
+	DrawFishingLine(hook, player);
+	
 	hook.DrawTri();
+}
+
+void DrawFishingLine(GameObject& hook, GameObject& player)
+{
+	Vector3 pPos = player.GetPosition();
+	Vector3 pScale = player.GetScale();
+	
+	// Line starts from player's top-right corner
+	Vector3 lineStart;
+	lineStart.x = pPos.x + (pScale.x * 0.525f);
+	lineStart.y = pPos.y + (pScale.y * 0.5f);
+	lineStart.z = pPos.z;
+	
+	// Line ends at hook position
+	Vector3 lineEnd = hook.GetPosition();
+	
+	// Draw white line (1.0, 1.0, 1.0 = white) with width of 2.0f
+	GameObject::DrawLine(lineStart, lineEnd, 1.0f, 1.0f, 1.0f, 2.0f);
 }
 
 bool IsHookActive()

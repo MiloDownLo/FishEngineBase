@@ -6,7 +6,7 @@ PLAYER
 
 FISHING ROD
 #- stops player movement with a bool when cast
-- made of a line and a triangle as a hook
+#- made of a line and a triangle as a hook
 #- once triangle touches a fish or floor, it reels back up
 
 FISH
