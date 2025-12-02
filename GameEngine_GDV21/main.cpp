@@ -83,7 +83,7 @@ void Update()
 	
 	#pragma endregion
 
-	// Check for spacebar input to start lowering hook
+	// Check for spacebar or E input to start lowering hook
 	if (Input::GetKey(' ') || Input::GetKey('e')) 
 		{hookLowering = true;}
 	
