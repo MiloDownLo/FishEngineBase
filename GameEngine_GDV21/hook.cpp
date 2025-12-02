@@ -1,11 +1,13 @@
 #include "hook.h"
 #include "input.h"
+#include "enemy.h"
 
 // Define the hook state variables
 bool hookLowering = false;
 bool hookGoingUp = false;
 float hookLowerSpeed = 0.1f;
 float bottomBoundary = -8.0f;
+int hookedFishIndex = -1; // -1 means no fish is hooked
 
 void InitializeHook(GameObject& hook)
 {
@@ -19,6 +21,7 @@ void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& e
 	if ((Input::GetKey(' ') || Input::GetKey('e')) && !hookLowering) {
 		hookLowering = true;
 		hookGoingUp = false;
+		hookedFishIndex = -1; // Reset hooked fish
 	}
 
 	Vector3 pPos = player.GetPosition();
@@ -52,6 +55,8 @@ void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& e
 				enemies[i].SetCollider(enemies[i].GetPosition(), enemies[i].GetScale());
 				if (hook.CheckCollision(enemies[i])) {
 					hitEnemy = true;
+					hookedFishIndex = i; // Remember which fish was hooked
+					HookEnemy(i); // Mark the fish as hooked
 					break;
 				}
 			}
@@ -70,6 +75,12 @@ void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& e
 				hookLowering = false;
 				hookGoingUp = false;
 				triPos.y = playerLevel;
+				
+				// Remove the hooked fish when hook reaches player
+				if (hookedFishIndex != -1) {
+					RemoveHookedEnemy(hookedFishIndex);
+					hookedFishIndex = -1;
+				}
 			}
 		}
 	} else {
@@ -86,4 +97,9 @@ void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& e
 bool IsHookActive()
 {
 	return hookLowering;
+}
+
+int GetHookedFishIndex()
+{
+	return hookedFishIndex;
 }

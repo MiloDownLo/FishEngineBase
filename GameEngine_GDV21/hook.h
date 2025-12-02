@@ -10,9 +10,11 @@ extern bool hookLowering;
 extern bool hookGoingUp;
 extern float hookLowerSpeed;
 extern float bottomBoundary;
+extern int hookedFishIndex;
 
 void InitializeHook(GameObject& hook);
 void UpdateHook(GameObject& hook, GameObject& player, std::vector<GameObject>& enemies);
 bool IsHookActive();
+int GetHookedFishIndex();
 
 #endif

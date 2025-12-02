@@ -67,16 +67,11 @@ void Update()
 	// Update and draw all enemies
 	UpdateEnemies();
 
-	// Check for player-enemy collision
-	#pragma region Player-Enemy Collision Detection
-	for (int i = 0; i < enemies.size(); i++)
-	{
-		if (player.CheckCollision(enemies[i])) 
-		{
-			cout << "[!] Clipping through with enemy at index " << i << endl;
-		}
+	// Draw hooked fish if there is one
+	int hookedIndex = GetHookedFishIndex();
+	if (hookedIndex != -1) {
+		UpdateHookedEnemy(hookedIndex, hook.GetPosition());
 	}
-	#pragma endregion
 }
 
 int main(int argc, char** argv)
