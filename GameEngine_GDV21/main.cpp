@@ -20,7 +20,9 @@ using namespace std;
 
 	// Hook lowering variables
 	bool hookLowering = false;
+	bool hookGoingUp = false;
 	float hookLowerSpeed = 0.1f;
+	float bottomBoundary = -8.0f; // Bottom of the screen/ocean
 #pragma endregion
 
 void Initialize() 
@@ -84,10 +86,10 @@ void Update()
 	#pragma endregion
 
 	// Check for spacebar or E input to start lowering hook
-	if (Input::GetKey(' ') || Input::GetKey('e')) 
-		{hookLowering = true;}
+	if ((Input::GetKey(' ') || Input::GetKey('e')) && !hookLowering) 
+		{hookLowering = true; hookGoingUp = false;}
 	
-	// Position and draw the hook attached to the player's top-right corner
+	// Position and draw the hook
 	# pragma region Hook Positioning
 		Vector3 pPos = player.GetPosition();
 		Vector3 pScale = player.GetScale();
@@ -103,10 +105,31 @@ void Update()
 
 		Vector3 triPos;
 		triPos.x = pPos.x + pHalfW - hHalfW + offset;
+		
 		if (hookLowering) {
-			// Get current hook position and lower it
+			// Get current hook position
 			Vector3 currentHookPos = hook.GetPosition();
-			triPos.y = currentHookPos.y - hookLowerSpeed; // Move down slowly
+			
+			if (!hookGoingUp) {
+				// Move down
+				triPos.y = currentHookPos.y - hookLowerSpeed;
+				
+				// Check if hit bottom boundary
+				if (triPos.y <= bottomBoundary) {
+					hookGoingUp = true; // Start going back up
+				}
+			} else {
+				// Move back up
+				triPos.y = currentHookPos.y + hookLowerSpeed;
+				
+				// Check if back at player level
+				float playerLevel = pPos.y + pHalfH - hHalfH + offset;
+				if (triPos.y >= playerLevel) {
+					hookLowering = false; // Done with this cast
+					hookGoingUp = false;
+					triPos.y = playerLevel; // Reset to player position
+				}
+			}
 		}
 		else {
 			// Default position attached to player
