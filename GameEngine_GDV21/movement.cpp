@@ -5,7 +5,7 @@
 #include "input.h"
 
 // Define movement boundaries (walls on both sides)
-float leftWall = -8.0f;   // Left boundary
+float leftWall = -8.5f;   // Left boundary
 float rightWall = 8.0f;   // Right boundary
 
 Vector3 MovementScript(GameObject player, Vector3 playerPosition)

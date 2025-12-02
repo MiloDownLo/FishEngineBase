@@ -1,6 +1,7 @@
 #include "engine.h"
 #include "movement.h"
 #include "hook.h"
+#include "enemy.h"
 #include "iostream";
 
 using namespace std;
@@ -12,8 +13,6 @@ using namespace std;
 	float spacing = 6.0f;
 	float scaleFactor = 0.25f;
 	float colorFactor = 0.4f;
-	vector<GameObject> enemies;
-	vector<float> enemySpeeds;
 	GameObject player;
 	GameObject hook;
 	GameObject ocean;
@@ -24,22 +23,7 @@ void Initialize()
 {
 	//Initialize enemy variables
 	enemyFormation.SetValue(-7.5f, -5, 0);
-	for (int i = 0; i < enemyCount; i++) {
-		GameObject enemy;
-		// set the position to have interval for each based on index
-		enemy.SetPosition(enemyFormation.x + (spacing * i),
-						  enemyFormation.y + ((spacing/2) * i),
-						  0);
-		enemy.SetScale(1, 1, 1);
-		enemy.SetColor(1, 0 + (colorFactor * i), 0);
-		// Add the enemy instance to the vector collection
-		enemies.push_back(enemy);
-
-		// give each NPC its own initial speed (vary sign or magnitude if you want different behaviour)
-		float s = 0.05f + (0.005f * i);    // slightly different speeds
-		if (i % 2 == 1) s = -s;           // every odd fish goes left first
-		enemySpeeds.push_back(s);
-	}
+	InitializeEnemies(enemyCount, enemyFormation, spacing, colorFactor);
 	
 	//Initialize ocean variables
 	ocean.SetPosition(0, -2, -1);
@@ -80,15 +64,13 @@ void Update()
 	// Update and draw the hook
 	UpdateHook(hook, player);
 
-	// Iterate through each enemy
-	#pragma region Enemy Movement and Collision
+	// Update and draw all enemies
+	UpdateEnemies();
+
+	// Check for player-enemy collision
+	#pragma region Player-Enemy Collision Detection
 	for (int i = 0; i < enemies.size(); i++)
 	{
-		// Make sure to render them every frame
-		Vector3 npcPos = enemies[i].GetPosition();
-		npcMovement(enemies[i], npcPos, enemySpeeds[i]);
-		enemies[i].Draw();
-
 		if (player.CheckCollision(enemies[i])) 
 		{
 			cout << "[!] Clipping through with enemy at index " << i << endl;
