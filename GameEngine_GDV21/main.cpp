@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "movement.h"
+#include "hook.h"
 #include "iostream";
 
 using namespace std;
@@ -17,12 +18,6 @@ using namespace std;
 	GameObject hook;
 	GameObject ocean;
 	int enemyCount = 3;
-
-	// Hook lowering variables
-	bool hookLowering = false;
-	bool hookGoingUp = false;
-	float hookLowerSpeed = 0.1f;
-	float bottomBoundary = -8.0f; // Bottom of the screen/ocean
 #pragma endregion
 
 void Initialize() 
@@ -62,8 +57,7 @@ void Initialize()
 	player.SetPosition(playerPosition);
 
 	//Initialize hook variables
-	hook.SetScale(0.7f, 0.65f, 1); // small triangle
-	hook.SetColor(0.4f, 0.4f, 0.4f);
+	InitializeHook(hook);
 }
 
 void Update() 
@@ -71,7 +65,7 @@ void Update()
 	ocean.DrawGradientQuad();
 	
 	#pragma region Player Movement and Collision
-	if (!hookLowering) // Only allow player movement if hook is not lowering
+	if (!IsHookActive()) // Only allow player movement if hook is not active
 	{
 		// Save current player position
 		Vector3 oldPosition = player.GetPosition();
@@ -79,68 +73,12 @@ void Update()
 		// Move player and resolve collisions (movement + collision logic moved into movement.cpp)
 		Vector3 newPosition = MovementResolve(player, oldPosition, enemies);
 		player.SetPosition(newPosition);
-		player.SetPosition(newPosition);
 	}
 	player.Draw();
-	
 	#pragma endregion
-
-	// Check for spacebar or E input to start lowering hook
-	if ((Input::GetKey(' ') || Input::GetKey('e')) && !hookLowering) 
-		{hookLowering = true; hookGoingUp = false;}
 	
-	// Position and draw the hook
-	# pragma region Hook Positioning
-		Vector3 pPos = player.GetPosition();
-		Vector3 pScale = player.GetScale();
-		Vector3 hScale = hook.GetScale();
-
-		float pHalfW = pScale.x * 0.5f;
-		float pHalfH = pScale.y * 0.5f;
-		float hHalfW = hScale.x * 0.5f;
-		float hHalfH = hScale.y * 0.5f;
-
-		// Slight offset so the triangle sits visually on the corner (adjust offset as needed)
-		const float offset = 0.4f;
-
-		Vector3 triPos;
-		triPos.x = pPos.x + pHalfW - hHalfW + offset;
-		
-		if (hookLowering) {
-			// Get current hook position
-			Vector3 currentHookPos = hook.GetPosition();
-			
-			if (!hookGoingUp) {
-				// Move down
-				triPos.y = currentHookPos.y - hookLowerSpeed;
-				
-				// Check if hit bottom boundary
-				if (triPos.y <= bottomBoundary) {
-					hookGoingUp = true; // Start going back up
-				}
-			} else {
-				// Move back up
-				triPos.y = currentHookPos.y + hookLowerSpeed;
-				
-				// Check if back at player level
-				float playerLevel = pPos.y + pHalfH - hHalfH + offset;
-				if (triPos.y >= playerLevel) {
-					hookLowering = false; // Done with this cast
-					hookGoingUp = false;
-					triPos.y = playerLevel; // Reset to player position
-				}
-			}
-		}
-		else {
-			// Default position attached to player
-			triPos.y = pPos.y + pHalfH - hHalfH + offset;
-		}
-
-		triPos.z = pPos.z + 0.01f; // render slightly in front of the player quad
-
-		hook.SetPosition(triPos);
-		hook.DrawTri();
-	# pragma endregion
+	// Update and draw the hook
+	UpdateHook(hook, player);
 
 	// Iterate through each enemy
 	#pragma region Enemy Movement and Collision
