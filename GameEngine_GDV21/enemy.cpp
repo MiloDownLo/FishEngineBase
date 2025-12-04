@@ -27,7 +27,7 @@ void InitializeEnemies(int enemyCount, Vector3 formation, float spacing, float c
 		enemyHooked.push_back(false);
 
 		// give each NPC its own initial speed (vary sign or magnitude if you want different behaviour)
-		float s = 0.05f + (0.005f * i);    // slightly different speeds
+		float s = 0.05f - (0.005f * i);    // slightly different speeds
 		if (i % 2 == 1) s = -s;           // every odd fish goes left first
 		enemySpeeds.push_back(s);
 	}
@@ -68,6 +68,10 @@ void RemoveHookedEnemy(int enemyIndex)
 		// Reset fish to original position and unmark it as hooked
 		enemies[enemyIndex].SetPosition(enemyOriginalPositions[enemyIndex]);
 		enemyHooked[enemyIndex] = false;
-		cout << "Fish caught!" << endl;
+		cout << "\nFish caught!" << endl;
+
+		// Increment score
+		++score;
+		cout << "Score: " << score << endl;
 	}
 }

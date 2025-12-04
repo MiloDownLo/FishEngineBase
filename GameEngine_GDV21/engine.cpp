@@ -7,7 +7,7 @@ void PrepareEngine(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200, 100);
+	glutInitWindowPosition(700, 300);
 	glutInitWindowSize(450, 400);
 	glutCreateWindow("MyOpenGL");
 

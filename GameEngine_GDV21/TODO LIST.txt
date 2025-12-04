@@ -12,7 +12,7 @@ FISHING ROD
 FISH
 #- is created via vector like enemies from maam's base?
 #- moves left and right, turns on hitting wall edge
-- once fish is hooked up, it resets the fish to its og position and gives +1 point
+#- once fish is hooked up, it resets the fish to its og position and gives +1 point
 
 DAY
 - demo features 2 days, second day repeating for demo

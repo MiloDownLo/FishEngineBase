@@ -5,7 +5,7 @@
 // Define the hook state variables
 bool hookLowering = false;
 bool hookGoingUp = false;
-float hookLowerSpeed = 0.1f;
+float hookLowerSpeed = 0.15f;
 float bottomBoundary = -8.0f;
 int hookedFishIndex = -1; // -1 means no fish is hooked
 

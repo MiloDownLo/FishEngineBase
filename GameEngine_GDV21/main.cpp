@@ -17,6 +17,7 @@ using namespace std;
 	GameObject hook;
 	GameObject ocean;
 	int enemyCount = 3;
+	int score = 0;
 #pragma endregion
 
 void Initialize() 
@@ -42,6 +43,10 @@ void Initialize()
 
 	//Initialize hook variables
 	InitializeHook(hook);
+
+	cout << "<- A  |  D ->" << endl;
+	cout << "-- Spacebar or E to lower the hook. --|>\n" << endl;
+	cout << "Score: " << score << endl;
 }
 
 void Update() 
