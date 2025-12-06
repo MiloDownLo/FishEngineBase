@@ -81,6 +81,7 @@ Collider GameObject::GetCollider()
 	return collider;
 }
 
+/*
 void GameObject::DrawCube() //Draws a cube
 {
 	// This is where we call the respective openGL functions that will render our object
@@ -96,7 +97,6 @@ void GameObject::DrawCube() //Draws a cube
 	collider.SetDimension(position, scale);
 }
 
-
 void GameObject::DrawSphere(float radius, int slices, int stacks) //Draws a sphere
 {
 	// This is where we call the respective openGL functions that will render our object
@@ -111,6 +111,7 @@ void GameObject::DrawSphere(float radius, int slices, int stacks) //Draws a sphe
 	// Update the collider here
 	collider.SetDimension(position, scale);
 }
+*/
 
 void GameObject::Draw() //Draws a quad
 {
